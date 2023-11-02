@@ -39,5 +39,17 @@ def handle_user(user_id):
     if user_id in users:
         if request.method == "GET":
             return jsonify(users[user_id])
+        
+        if request.method == "DELETE":
+            del users[user_id]
+            return jsonify({"message": "User deleted"}), 200
+
+        if request.method == "PUT":
+            if (request.json['name']):
+                users[user_id]['name'] = request.json['name']
+                return jsonify({"message": "User updated"}), 200
+            else:
+                return jsonify({"message": "Empty username"}), 500
+
     else:
         return jsonify({"message": "User not found"}), 404
