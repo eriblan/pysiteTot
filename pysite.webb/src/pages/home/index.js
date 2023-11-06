@@ -4,6 +4,7 @@ const Home = () => {
   const [data, setData] = useState(null);
   const [newUser, setNewUser] = useState({ name: '' });
   const [updatedNames, setUpdatedNames] = useState({});
+  //const [errorMsg, setErrorMsg] = useState({});
   // Below function performs the POST operation when called
   const addUser = () => {
     fetch('http://127.0.0.1:5000/api/users', {
@@ -60,7 +61,13 @@ const Home = () => {
         if (response.ok) {
           fetchData(); // Fetch data again to reflect the changes
         } else {
-          console.log('Error updating the user');
+          // If the response is not ok, parse the response body as JSON
+          return response.json().then((errorData) => {
+            // Throw an error with the error message from the server
+            //setErrorMsg(errorData.message);
+            alert(`HTTP error! status: ${response.status}, message: ${errorData.message}`);
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message}`);
+          });
         }
       })
       .catch((error) => {
@@ -103,9 +110,13 @@ const Home = () => {
         <button onClick={addUser}>Add User</button>
       </div>
       <div className="PUT and Delete">
+        
         {data ? (
           <ul>
             <h2>Displayed Data</h2>
+
+
+            {}
             <p>In the input field you type the updated name you want for your user</p>
             {Object.keys(data.users).map((userId) => (
               <li key={userId}>

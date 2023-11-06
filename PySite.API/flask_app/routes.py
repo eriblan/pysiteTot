@@ -73,7 +73,7 @@ def handle_user(user_id):
 
     if request.method == "DELETE":
         del users[user_id]
-        return jsonify({"message": "User deleted"}), 200
+        return jsonify({"message": f"User {user_id} deleted"}), 200
 
     if request.method == "PUT":
         request_data = request.get_json()
